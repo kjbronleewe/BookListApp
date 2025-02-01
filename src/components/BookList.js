@@ -38,9 +38,11 @@ export default function BookList() {
       >
         Not Completed
       </button>
-      {filteredBooks.map((b) => (
-        <BookDetails book={b} />
-      ))}
+      <div className="container">
+        {filteredBooks.map((b) => (
+          <BookDetails book={b} />
+        ))}
+      </div>
     </div>
   );
 }
