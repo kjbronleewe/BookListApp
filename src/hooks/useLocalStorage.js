@@ -6,16 +6,15 @@ const useLocalStorage = (key, initialValue) => {
       const value = localStorage.getItem(key);
 
       if (value) {
-        return JSON.parse(value)
+        return JSON.parse(value);
       } else {
-        localStorage.setItem(key, JSON.stringify(initialValue)); 
-        return initialValue
+        localStorage.setItem(key, JSON.stringify(initialValue));
+        return initialValue;
       }
     } catch (error) {
-      localStorage.setItem(key, JSON.stringify(initialValue))
-      return initialValue
+      localStorage.setItem(key, JSON.stringify(initialValue));
+      return initialValue;
     }
-    
   });
 
   useEffect(() => {
@@ -26,6 +25,5 @@ const useLocalStorage = (key, initialValue) => {
 };
 
 export default useLocalStorage;
-
 
 // return book ? JSON.parse(book) : initialValue;
