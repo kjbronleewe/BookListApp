@@ -19,24 +19,24 @@ export default function BookList() {
 
   return (
     <div>
-      <h2>List of Books</h2>
+      <h3 style={{ padding: '20px' }}>List of Books</h3>
       <button
-        className="btn btn-primary"
+        className="btn btn-dark"
         onClick={() => setCompletedFilter('All')}
       >
-        All
+        All Books
       </button>
       <button
-        className="btn btn-primary"
+        className="btn btn-dark"
         onClick={() => setCompletedFilter('yes')}
       >
-        Completed
+        Completed Books
       </button>
       <button
-        className="btn btn-primary"
+        className="btn btn-dark"
         onClick={() => setCompletedFilter('no')}
       >
-        Not Completed
+        Not Completed Books
       </button>
       <div className="container">
         {filteredBooks.map((b) => (

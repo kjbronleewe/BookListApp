@@ -12,8 +12,8 @@ function App() {
     <div className="App">
       <Header />
       <Routes>
-        <Route path="/" element={<BookList />} />
-        <Route path="/add" element={<AddBook />} />
+        <Route path="/" element={<BookList books={books} setBooks={setBooks} />} />
+        <Route path="/add" element={<AddBook books={books} setBooks={setBooks} />} />
       </Routes>
     </div>
   );

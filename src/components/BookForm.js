@@ -1,17 +1,23 @@
+import { useState } from 'react';
 import { Button, Col, FormGroup, Label } from 'reactstrap';
 import { Formik, Form, Field } from 'formik';
 import useLocalStorage from '../hooks/useLocalStorage';
+import { v4 as uuidv4 } from 'uuid';
 
-const BookForm = () => {
+
+const BookForm = (props) => {
   const [books, setBooks] = useLocalStorage('books', []);
 
-  const handleSubmit = (values, { resetForm }) => {
+  const handleOnSubmit = (formValues, { resetForm }) => {
+    const { title, author, rating, completed } = formValues; 
+
     const newBook = {
-      id: Date.now(),
-      title: values.title,
-      author: values.author,
-      rating: values.rating,
-      completed: values.completed,
+      id: uuidv4(), 
+      title,
+      author,
+      rating,
+      completed, 
+      date: Date.now()
     };
     setBooks((prevBooks) => [...prevBooks, newBook]);
 
@@ -26,7 +32,7 @@ const BookForm = () => {
         rating: '',
         completed: false,
       }}
-      onSubmit={handleSubmit}
+      onSubmit={handleOnSubmit}
     >
       <Form>
         <FormGroup row>
@@ -59,7 +65,8 @@ const BookForm = () => {
           </Label>
           <Col md="3">
             <Field name="rating" as="select" className="form-control">
-              <option>Select a rating</option>
+              <option>Select a rating from 1-5</option>
+              <option>Have not completed yet</option>
               <option>1</option>
               <option>2</option>
               <option>3</option>
@@ -69,18 +76,18 @@ const BookForm = () => {
           </Col>
         </FormGroup>
         <FormGroup row>
-          <Label check md={{ size: 10, offset: 1 }}>
+          <Label check md={{ size: 15, offset: 0 }}>
             <Field
               name="completed"
               type="checkbox"
               className="form-check-input"
             />{' '}
-            Have you completed this book?
+            Have you read this book?
           </Label>
         </FormGroup>
         <FormGroup row>
           <Col md={{ size: 10, offset: 1 }}>
-            <Button type="submit" color="primary">
+            <Button type="submit" >
               Submit Book
             </Button>
           </Col>

@@ -1,17 +1,20 @@
-import BookForm from "./BookForm";
+import BookForm from './BookForm';
+import { useNavigate } from 'react-router-dom';
 
+const AddBook = ({ books, setBooks }) => {
+  const navigate = useNavigate();
 
-const AddBook = () => {
-    const handleOnSubmit = (book) => {
-        console.log(book)
-    }; 
+  const handleOnSubmit = (book) => {
+    setBooks((prevBooks) => [book, ...prevBooks]);
+    navigate('/');
+  };
 
-    return(
-        <>
-        <h1>Add a Book</h1>
-        <BookForm handleOnSubmit={handleOnSubmit} />
-        </>
-    )
-}
+  return (
+    <>
+      <h3 style={{ padding: '20px' }}>Add a Book</h3>
+      <BookForm handleOnSubmit={handleOnSubmit} />
+    </>
+  );
+};
 
-export default AddBook
+export default AddBook;
