@@ -1,4 +1,5 @@
-import { Button, Card } from "reactstrap";
+import { useNavigate } from "react-router-dom";
+import { Button, Card, CardBody, CardTitle } from 'reactstrap'
 
 const Book = ({
   id,
@@ -9,21 +10,26 @@ const Book = ({
   date,
   handleRemoveBook,
 }) => {
+
+  const navigate = useNavigate()
+
   return (
     <Card style={{ width: '18rem' }} className="book">
-      <Card.Body>
-        <Card.Title className="book-title">{title}</Card.Title>
+      <CardBody>
+        <CardTitle className="book-title">{title}</CardTitle>
         <div className="book-details">
           <div>Author: {author}</div>
           <div>Rating: {rating} </div>
           <div>Completed: {completed} </div>
           <div>Date: {new Date(date).toDateString()}</div>
         </div>
-        {/* <Button variant="primary">Edit</Button>{' '} */}
-        <Button variant="danger" onClick={() => handleRemoveBook(id)}>
+        <Button color="primary" onClick={() => navigate(`/edit/${id}`)}>
+          Edit
+        </Button>{' '}
+        <Button color="danger" onClick={() => handleRemoveBook(id)}>
           Delete
         </Button>
-      </Card.Body>
+      </CardBody>
     </Card>
   );
 };

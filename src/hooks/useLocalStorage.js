@@ -3,10 +3,9 @@ import { useState, useEffect } from 'react';
 const useLocalStorage = (key, initialValue) => {
   const [value, setValue] = useState(() => {
     try {
-      const value = localStorage.getItem(key);
-
-      if (value) {
-        return JSON.parse(value);
+      const localValue = localStorage.getItem(key);
+      if (localValue) {
+        return JSON.parse(localValue);
       } else {
         localStorage.setItem(key, JSON.stringify(initialValue));
         return initialValue;
@@ -26,4 +25,4 @@ const useLocalStorage = (key, initialValue) => {
 
 export default useLocalStorage;
 
-// return book ? JSON.parse(book) : initialValue;
+

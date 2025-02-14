@@ -1,6 +1,16 @@
-import React from 'react'
+import { useState } from 'react';
 
-function BookFilter({ setCompletedFilter }) {
+const BookFilter = ({ books }) => {
+  const [completedFilter, setCompletedFilter] = useState('All');
+
+  const filteredBooks =
+    completedFilter === 'All'
+      ? books
+      : books.filter((book) =>
+          completedFilter === 'yes' ? book.completed : !book.completed
+        );
+
+  console.log(filteredBooks);
   return (
     <div>
       <button
@@ -15,14 +25,11 @@ function BookFilter({ setCompletedFilter }) {
       >
         Completed Books
       </button>
-      <button
-        className="btn btn-dark"
-        onClick={() => setCompletedFilter('no')}
-      >
+      <button className="btn btn-dark" onClick={() => setCompletedFilter('no')}>
         Not Completed Books
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default BookFilter
+export default BookFilter;

@@ -1,108 +1,120 @@
-import { useState } from 'react';
-import { Button, Col, FormGroup, Label } from 'reactstrap';
-import { Formik, Form, Field } from 'formik';
-import useLocalStorage from '../hooks/useLocalStorage';
+import React, { useState } from 'react';
+import { Form, FormGroup, Button, Input, Label } from 'reactstrap';
 import { v4 as uuidv4 } from 'uuid';
 
-
 const BookForm = (props) => {
-  const [books, setBooks] = useLocalStorage('books', []);
-
-  const handleOnSubmit = (formValues, { resetForm }) => {
-    const { title, author, rating, completed } = formValues; 
-
-    const newBook = {
-      id: uuidv4(), 
-      title,
-      author,
-      rating,
-      completed, 
-      date: Date.now()
+  const [book, setBook] = useState(() => {
+    return {
+      title: props.book ? props.book.title : '',
+      author: props.book ? props.book.author : '',
+      rating: props.book ? props.book.rating : '',
+      completed: props.book ? props.book.completed : '',
+      date: props.book ? props.book.date : ''
     };
-    setBooks((prevBooks) => [...prevBooks, newBook]);
+  });
 
-    resetForm();
+  const [errorMsg, setErrorMsg] = useState('');
+  const { title, author, rating, completed } = book;
+
+  const handleOnSubmit = (event) => {
+    event.preventDefault();
+    const values = [title, author, rating, completed];
+    let errorMsg = '';
+
+    const allFieldsFilled = values.every((field) => {
+      const value = `${field}`.trim();
+      return value !== '' && value !== '0';
+    });
+
+    if (allFieldsFilled) {
+      const book = {
+        id: uuidv4(),
+        title,
+        author,
+        rating,
+        completed,
+        date: new Date()
+      };
+      props.handleOnSubmit(book);
+    } else {
+      errorMsg = 'Please fill out all the fields.';
+    }
+    setErrorMsg(errorMsg);
   };
 
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    switch (name) {
+      case 'rating':
+        if (value === '' || parseInt(value) === +value) {
+          setBook((prevState) => ({
+            ...prevState,
+            [name]: value
+          }));
+        }
+        break;
+      default:
+        setBook((prevState) => ({
+          ...prevState,
+          [name]: value
+        }));
+    }
+    }
+  
   return (
-    <Formik
-      initialValues={{
-        title: '',
-        author: '',
-        rating: '',
-        completed: false,
-      }}
-      onSubmit={handleOnSubmit}
-    >
-      <Form>
-        <FormGroup row>
-          <Label htmlFor="title" md="2">
-            Title
-          </Label>
-          <Col md="5">
-            <Field
-              name="title"
-              placeholder="Title of Book"
-              className="form-control"
-            />
-          </Col>
+    <div className="main-form">
+      {errorMsg && <p className="errorMsg">{errorMsg}</p>}
+      <Form onSubmit={handleOnSubmit}>
+        <FormGroup controlId="title">
+          <Label>Book Title</Label>
+          <Input
+            className="input-control"
+            type="text"
+            name="title"
+            value={title}
+            placeholder="Enter title of book"
+            onChange={handleInputChange}
+          />
         </FormGroup>
-        <FormGroup row>
-          <Label htmlFor="author" md="2">
-            Author
-          </Label>
-          <Col md="5">
-            <Field
-              name="author"
-              placeholder="Book Author"
-              className="form-control"
-            />
-          </Col>
+        <FormGroup controlId="author">
+          <Label>Book Author</Label>
+          <Input
+            className="input-control"
+            type="text"
+            name="author"
+            value={author}
+            placeholder="Enter name of author"
+            onChange={handleInputChange}
+          />
         </FormGroup>
-        <FormGroup row>
-          <Label htmlFor="rating" md="2">
-            Book rating
-          </Label>
-          <Col md="3">
-            <Field name="rating" as="select" className="form-control">
-              <option>Select a rating from 1-5</option>
-              <option>Have not completed yet</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-            </Field>
-          </Col>
+        <FormGroup controlId="rating">
+          <Label>Rating</Label>
+          <Input
+            className="input-control"
+            type="number"
+            name="rating"
+            value={rating}
+            placeholder="Enter a rating from 1 - 5"
+            onChange={handleInputChange}
+          />
         </FormGroup>
-        <FormGroup row>
-          <Label check md={{ size: 15, offset: 0 }}>
-            <Field
-              name="completed"
-              type="checkbox"
-              className="form-check-input"
-            />{' '}
-            Have you read this book?
-          </Label>
+        <FormGroup controlId="completed">
+          <Label>Book completed</Label>
+          <Input
+            className="input-control"
+            type="text"
+            name="completed"
+            value={completed}
+            placeholder="Enter if you have completed the book"
+            onChange={handleInputChange}
+          />
         </FormGroup>
-        <FormGroup row>
-          <Col md={{ size: 10, offset: 1 }}>
-            <Button type="submit" >
-              Submit Book
-            </Button>
-          </Col>
-        </FormGroup>
+        <Button variant="primary" type="submit" className="submit-btn">
+          Submit
+        </Button>
       </Form>
-    </Formik>
+    </div>
   );
 };
-
-const BookList = ({ books }) => (
-  <ul>
-    {books.map((book) => (
-      <li key={book.id}>{book.title} by {book.author}</li>
-    ))}
-  </ul>
-);
 
 export default BookForm;
