@@ -1,27 +1,25 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Router } from 'react-router-dom';
 import Header from './components/Header';
 import './App.css';
 import BookList from './components/BookList';
 import AddBook from './components/AddBook';
 import EditBook from './components/EditBook';
-import BookProvider from './context/BookContext';
-import useLocalStorage from './hooks/useLocalStorage';
+import { BookProvider }  from './context/BookContext';
 
 function App() {
-  const [books, setBooks] = useLocalStorage('books', []);
-
   return (
     <BookProvider>
-      <div className="App">
+      <Router>
+        <div className="App">
         <Header />
         <Routes>
           <Route
             path="/"
-            element={<BookList books={books} setBooks={setBooks} />}
+            element={<BookList />}
           />
           <Route
             path="/add"
-            element={<AddBook books={books} setBooks={setBooks} />}
+            element={<AddBook />}
           />
           <Route
             path="/edit/:id"
@@ -29,6 +27,7 @@ function App() {
           />
         </Routes>
       </div>
+      </Router>
     </BookProvider>
   );
 }

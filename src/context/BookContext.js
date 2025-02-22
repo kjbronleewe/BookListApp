@@ -1,20 +1,43 @@
-import { createContext } from 'react';
-import useLocalStorage from '../hooks/useLocalStorage';
-import { v4 as uuidv4 } from 'uuid';
- 
+import { createContext, useState, useEffect } from 'react';
 
-export const BookContext = createContext();
+const BookContext = createContext();
 
-const BookProvider = ({ children }) => {
-  const [books, setBooks] = useLocalStorage('books', []);
+export const BookProvider = ({ children }) => {
+  const [books, setBooks] = useState([])
 
-  const value = { books, setBooks };
+useEffect(() => {
+  fetchBooks()
+}, [])
+
+const fetchBooks = async () => {
+  const response = await fetch(
+    `http://localhost:5000/feedback?_sort=id&_order=desc`
+  )
+const data = await response.json()
+
+setBooks(data)
+}
+
+const addBook = (newBook) => {
+  newBook.id = uuidv4()
+  setBooks([newBook, ...books])
+}
+
+const deleteBook = (id) => {
+  if (window.confirm('Are you sure you want to delete?')) {
+    setBooks(books.filter((item) => item.id !== id))
+  }
+}
 
   return (
-    <BookContext.Provider value={(value)}>
+    <BookContext.Provider value={{
+      books,
+      deleteBook, 
+      addBook
+    }}>
       {children}
     </BookContext.Provider>
   );
 };
 
-export default BookProvider;
+export default BookContext; 

@@ -1,32 +1,26 @@
-import { useNavigate } from "react-router-dom";
-import { Button, Card, CardBody, CardTitle } from 'reactstrap'
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button, Card, CardBody, CardTitle } from 'reactstrap';
+import BookContext from '../context/BookContext';
 
-const Book = ({
-  id,
-  title,
-  author,
-  rating,
-  completed,
-  date,
-  handleRemoveBook,
-}) => {
+const Book = ({ item }) => {
+  const { deleteBook } = useContext(BookContext);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <Card style={{ width: '18rem' }} className="book">
       <CardBody>
-        <CardTitle className="book-title">{title}</CardTitle>
+        <CardTitle className="book-title">{item.title}</CardTitle>
         <div className="book-details">
-          <div>Author: {author}</div>
-          <div>Rating: {rating} </div>
-          <div>Completed: {completed} </div>
+          <div>Author: {item.author}</div>
+          <div>Completed: {item.completed} </div>
           <div>Date: {new Date(date).toDateString()}</div>
         </div>
-        <Button color="primary" onClick={() => navigate(`/edit/${id}`)}>
+        <Button color="primary" onClick={() => navigate(`/edit/${item.id}`)}>
           Edit
         </Button>{' '}
-        <Button color="danger" onClick={() => handleRemoveBook(id)}>
+        <Button color="danger" onClick={() => deleteBook(item.id)}>
           Delete
         </Button>
       </CardBody>

@@ -1,119 +1,88 @@
-import React, { useState } from 'react';
-import { Form, FormGroup, Button, Input, Label } from 'reactstrap';
-import { v4 as uuidv4 } from 'uuid';
+import { useContext } from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Button, Label, Col, FormGroup } from 'reactstrap';
+import BookContext from '../context/BookContext';
 
-const BookForm = (props) => {
-  const [book, setBook] = useState(() => {
-    return {
-      title: props.book ? props.book.title : '',
-      author: props.book ? props.book.author : '',
-      rating: props.book ? props.book.rating : '',
-      completed: props.book ? props.book.completed : '',
-      date: props.book ? props.book.date : ''
-    };
-  });
+const {addBook} = useContext(BookContext)
 
-  const [errorMsg, setErrorMsg] = useState('');
-  const { title, author, rating, completed } = book;
+const validateForm = (values) => {
+  const errors = {};
 
-  const handleOnSubmit = (event) => {
-    event.preventDefault();
-    const values = [title, author, rating, completed];
-    let errorMsg = '';
+  if (!values.title) {
+    errors.title = 'Required';
+  }
 
-    const allFieldsFilled = values.every((field) => {
-      const value = `${field}`.trim();
-      return value !== '' && value !== '0';
-    });
+  return errors;
+};
 
-    if (allFieldsFilled) {
-      const book = {
-        id: uuidv4(),
-        title,
-        author,
-        rating,
-        completed,
-        date: new Date()
-      };
-      props.handleOnSubmit(book);
-    } else {
-      errorMsg = 'Please fill out all the fields.';
-    }
-    setErrorMsg(errorMsg);
+const BookForm = () => {
+
+  const handleSubmit = (values, { resetForm }) => {
+    const newBook = {
+      title, 
+      author, 
+      completed
+    }; 
+
+    addBook(newBook); 
+
+    resetForm();
   };
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    switch (name) {
-      case 'rating':
-        if (value === '' || parseInt(value) === +value) {
-          setBook((prevState) => ({
-            ...prevState,
-            [name]: value
-          }));
-        }
-        break;
-      default:
-        setBook((prevState) => ({
-          ...prevState,
-          [name]: value
-        }));
-    }
-    }
-  
   return (
-    <div className="main-form">
-      {errorMsg && <p className="errorMsg">{errorMsg}</p>}
-      <Form onSubmit={handleOnSubmit}>
-        <FormGroup controlId="title">
-          <Label>Book Title</Label>
-          <Input
-            className="input-control"
-            type="text"
-            name="title"
-            value={title}
-            placeholder="Enter title of book"
-            onChange={handleInputChange}
-          />
+    <Formik
+      initialValues={{
+        title: '',
+        author: '',
+        completed: 'Yes',
+      }}
+      validate={validateForm}
+      onSubmit={handleSubmit}
+    >
+      <Form>
+        <FormGroup row>
+          <Label htmlFor="title" md="2">
+            Book Title
+          </Label>
+          <Col md="8">
+            <Field
+              name="title"
+              placeholder="Ttile of book"
+              className="form-control"
+            />
+            <ErrorMessage name="title">
+              {(msg) => <p className="text-danger">{msg}</p>}
+            </ErrorMessage>
+          </Col>
         </FormGroup>
-        <FormGroup controlId="author">
-          <Label>Book Author</Label>
-          <Input
-            className="input-control"
-            type="text"
-            name="author"
-            value={author}
-            placeholder="Enter name of author"
-            onChange={handleInputChange}
-          />
+        <FormGroup row>
+          <Label htmlFor="author" md="2">
+            Book author
+          </Label>
+          <Col md="8">
+            <Field
+              name="author"
+              placeholder="Author of book"
+              className="form-control"
+            />
+          </Col>
         </FormGroup>
-        <FormGroup controlId="rating">
-          <Label>Rating</Label>
-          <Input
-            className="input-control"
-            type="number"
-            name="rating"
-            value={rating}
-            placeholder="Enter a rating from 1 - 5"
-            onChange={handleInputChange}
-          />
+        <FormGroup row>
+          <Label md={{ size: 3, offset: 1 }}>
+            Have you completed this book?
+          </Label>
+          <Col md="4">
+            <Field name="completed" as="select" className="form-control">
+              <option>Yes</option>
+              <option>No</option>
+            </Field>
+          </Col>
         </FormGroup>
-        <FormGroup controlId="completed">
-          <Label>Book completed</Label>
-          <Input
-            className="input-control"
-            type="text"
-            name="completed"
-            value={completed}
-            placeholder="Enter if you have completed the book"
-            onChange={handleInputChange}
-          />
-        </FormGroup>
-        <Button variant="primary" type="submit" className="submit-btn">
-          Submit
-        </Button>
+        <Col md={{ size: 9, offset: 1 }}>
+          <Button type="submit">Submit</Button>
+        </Col>
       </Form>
-    </div>
+    </Formik>
   );
 };
 
