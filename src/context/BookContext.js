@@ -3,41 +3,80 @@ import { createContext, useState, useEffect } from 'react';
 const BookContext = createContext();
 
 export const BookProvider = ({ children }) => {
-  const [books, setBooks] = useState([])
+  const [books, setBooks] = useState([]);
+  const [bookEdit, setBookEdit] = useState({
+    item: {},
+    edit: false,
+  });
 
-useEffect(() => {
-  fetchBooks()
-}, [])
+  useEffect(() => {
+    fetchBooks();
+  }, []);
 
-const fetchBooks = async () => {
-  const response = await fetch(
-    `http://localhost:5000/feedback?_sort=id&_order=desc`
-  )
-const data = await response.json()
+  const fetchBooks = async () => {
+    const response = await fetch(`/books?_sort=id&_order=desc`);
+    const data = await response.json();
 
-setBooks(data)
-}
+    setBooks(data);
+  };
 
-const addBook = (newBook) => {
-  newBook.id = uuidv4()
-  setBooks([newBook, ...books])
-}
+  const addBook = async (newBook) => {
+    const response = await fetch('/books', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newBook),
+    });
 
-const deleteBook = (id) => {
-  if (window.confirm('Are you sure you want to delete?')) {
-    setBooks(books.filter((item) => item.id !== id))
-  }
-}
+    const data = await response.json();
+
+    setBooks([data, ...books]);
+  };
+
+  const deleteBook = async (id) => {
+    if (window.confirm('Are you sure you want to delete?')) {
+      await fetch(`/books/${id}`, { method: 'DELETE' });
+
+      setBooks(books.filter((item) => item.id !== id));
+    }
+  };
+
+  const updateBook = async (id, updItem) => {
+    const response = await fetch(`/book/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updItem),
+    });
+
+    const data = await response.json();
+
+    setBooks(
+      books.map((item) => (item.id === id ? { ...item, ...data } : item))
+    );
+  };
+
+  const editBook = (item) => {
+    setBookEdit({
+      item: {},
+      edit: true,
+    });
+  };
 
   return (
-    <BookContext.Provider value={{
-      books,
-      deleteBook, 
-      addBook
-    }}>
+    <BookContext.Provider
+      value={{
+        books,
+        bookEdit,
+        deleteBook,
+        addBook,
+        editBook,
+        updateBook,
+      }}
+    >
       {children}
     </BookContext.Provider>
   );
 };
 
-export default BookContext; 
+export default BookContext;

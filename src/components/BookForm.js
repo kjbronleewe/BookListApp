@@ -1,88 +1,69 @@
-import { useContext } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { Button, Label, Col, FormGroup } from 'reactstrap';
+import { useState, useContext } from 'react';
 import BookContext from '../context/BookContext';
-
-const {addBook} = useContext(BookContext)
-
-const validateForm = (values) => {
-  const errors = {};
-
-  if (!values.title) {
-    errors.title = 'Required';
-  }
-
-  return errors;
-};
+import Card from './shared/Card';
+import { Button } from 'reactstrap';
 
 const BookForm = () => {
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [btnDisabled, setBtnDisabled] = useState(true);
+  const [message, setMessage] = useState('');
 
-  const handleSubmit = (values, { resetForm }) => {
+  const { addBook } = useContext(BookContext);
+
+  const handleTextChange = (e, field) => {
+    if (title === '') {
+      setBtnDisabled(true);
+      setMessage(null);
+    } else {
+      setMessage(null);
+      setBtnDisabled(false);
+    }
+
+    if (field === 'title') {
+      setTitle(e.target.value);
+    } else if (field === 'author') {
+      setAuthor(e.target.value);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     const newBook = {
-      title, 
-      author, 
-      completed
-    }; 
+      title,
+      author,
+    };
+    addBook(newBook);
 
-    addBook(newBook); 
-
-    resetForm();
+    setTitle('');
+    setAuthor('');
   };
 
   return (
-    <Formik
-      initialValues={{
-        title: '',
-        author: '',
-        completed: 'Yes',
-      }}
-      validate={validateForm}
-      onSubmit={handleSubmit}
-    >
-      <Form>
-        <FormGroup row>
-          <Label htmlFor="title" md="2">
-            Book Title
-          </Label>
-          <Col md="8">
-            <Field
-              name="title"
-              placeholder="Ttile of book"
-              className="form-control"
-            />
-            <ErrorMessage name="title">
-              {(msg) => <p className="text-danger">{msg}</p>}
-            </ErrorMessage>
-          </Col>
-        </FormGroup>
-        <FormGroup row>
-          <Label htmlFor="author" md="2">
-            Book author
-          </Label>
-          <Col md="8">
-            <Field
-              name="author"
-              placeholder="Author of book"
-              className="form-control"
-            />
-          </Col>
-        </FormGroup>
-        <FormGroup row>
-          <Label md={{ size: 3, offset: 1 }}>
-            Have you completed this book?
-          </Label>
-          <Col md="4">
-            <Field name="completed" as="select" className="form-control">
-              <option>Yes</option>
-              <option>No</option>
-            </Field>
-          </Col>
-        </FormGroup>
-        <Col md={{ size: 9, offset: 1 }}>
-          <Button type="submit">Submit</Button>
-        </Col>
-      </Form>
-    </Formik>
+    <Card>
+      <form onSubmit={handleSubmit}>
+        <h2>Add a book to your shelf</h2>
+        <div className="input-group" >
+          <input
+            onChange={(e) => handleTextChange(e, 'title')}
+            type="text"
+            placeholder="Title of book"
+            value={title}
+          />
+          <input
+            onChange={(e) => handleTextChange(e, 'author')}
+            type="text"
+            placeholder="Author of book"
+            value={author}
+          />
+          <Button type="submit" version="primary" isDisabled={btnDisabled}>
+            Submit
+          </Button>
+        </div>
+
+        {message && <div className="message">{message}</div>}
+      </form>
+    </Card>
   );
 };
 

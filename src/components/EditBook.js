@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import BookForm from './BookForm';
 import { useNavigate, useParams } from 'react-router-dom';
-import { BookContext } from '../context/BookContext';
+import BookContext from '../context/BookContext';
 
 const EditBook = () => {
   const { books, setBooks } = useContext(BookContext);
