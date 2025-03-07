@@ -1,22 +1,31 @@
-import { useContext } from 'react';
-import { Button, Card, CardBody, CardTitle } from 'reactstrap';
-import BookContext from '../context/BookContext';
+import { useContext } from "react";
+import { Button, Card, CardBody, CardTitle } from "reactstrap";
+import BookContext from "../context/BookContext";
 
 const Book = ({ item }) => {
-  const { deleteBook, editBook } = useContext(BookContext);
+  const { deleteBook } = useContext(BookContext);
 
   return (
-    <Card style={{ width: '18rem' }} className="book">
+    <Card
+      style={{
+        width: "20rem",
+        borderRadius: "15px",
+        backgroundColor: "#E6CAAF",
+      }}
+      className="custom-card"
+    >
       <CardBody>
         <CardTitle className="book-title">{item.title}</CardTitle>
         <div className="book-details">
           <div>Author: {item.author}</div>
-          <div>Completed: {item.completed} </div>
+          <div>{item.notesAboutBook}</div>
         </div>
-        <Button color="primary" onClick={() => editBook(item)}>
-          Edit
-        </Button>{' '}
-        <Button color="danger" onClick={() => deleteBook(item.id)}>
+        <Button
+          color="danger"
+          size="sm"
+          outline
+          onClick={() => deleteBook(item.id)}
+        >
           Delete
         </Button>
       </CardBody>

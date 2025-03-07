@@ -1,20 +1,19 @@
-import { useContext } from 'react';
-import BookForm from './BookForm';
-import { useNavigate } from 'react-router-dom';
-import BookContext from '../context/BookContext';
+import { useContext } from "react";
+import BookForm from "./BookForm";
+import BookContext from "../context/BookContext";
 
 const AddBook = () => {
-  const { books, setBooks } = useContext(BookContext)
-  const navigate = useNavigate();
+  const { books, setBooks } = useContext(BookContext);
 
   const handleOnSubmit = (book) => {
     setBooks([book, ...books]);
-    navigate('/');
   };
 
   return (
     <>
-      <h3 style={{ padding: '20px' }}>Add a Book</h3>
+      <h3 style={{ padding: "20px" }} className="title">
+        Add a book
+      </h3>
       <BookForm handleOnSubmit={handleOnSubmit} />
     </>
   );

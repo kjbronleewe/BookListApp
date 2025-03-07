@@ -1,13 +1,9 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from "react";
 
 const BookContext = createContext();
 
 export const BookProvider = ({ children }) => {
   const [books, setBooks] = useState([]);
-  const [bookEdit, setBookEdit] = useState({
-    item: {},
-    edit: false,
-  });
 
   useEffect(() => {
     fetchBooks();
@@ -21,10 +17,10 @@ export const BookProvider = ({ children }) => {
   };
 
   const addBook = async (newBook) => {
-    const response = await fetch('/books', {
-      method: 'POST',
+    const response = await fetch("/books", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(newBook),
     });
@@ -35,8 +31,8 @@ export const BookProvider = ({ children }) => {
   };
 
   const deleteBook = async (id) => {
-    if (window.confirm('Are you sure you want to delete?')) {
-      await fetch(`/books/${id}`, { method: 'DELETE' });
+    if (window.confirm("Are you sure you want to delete?")) {
+      await fetch(`/books/${id}`, { method: "DELETE" });
 
       setBooks(books.filter((item) => item.id !== id));
     }
@@ -44,8 +40,8 @@ export const BookProvider = ({ children }) => {
 
   const updateBook = async (id, updItem) => {
     const response = await fetch(`/book/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updItem),
     });
 
@@ -56,21 +52,12 @@ export const BookProvider = ({ children }) => {
     );
   };
 
-  const editBook = (item) => {
-    setBookEdit({
-      item: {},
-      edit: true,
-    });
-  };
-
   return (
     <BookContext.Provider
       value={{
         books,
-        bookEdit,
         deleteBook,
         addBook,
-        editBook,
         updateBook,
       }}
     >
