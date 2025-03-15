@@ -52,7 +52,7 @@ const BookForm = () => {
                 placeholder="Title"
                 value={title}
                 id="title"
-                style={{ marginLeft: "10px", fontStyle: "italic" }}
+                style={{ marginLeft: "10px" }}
               />
             </label>
             <label
@@ -67,12 +67,13 @@ const BookForm = () => {
                 placeholder="Author"
                 value={author}
                 id="author"
-                style={{ marginLeft: "10px", fontStyle: "italic" }}
+                style={{ marginLeft: "10px" }}
               />
             </label>
             <label htmlFor={notesAboutBook}>Notes about book:</label>
             <textarea
               name="notes"
+              className="textarea"
               id={notesAboutBook}
               rows={2}
               cols={20}

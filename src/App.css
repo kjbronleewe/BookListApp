@@ -10,12 +10,16 @@
 
 body {
   line-height: 1.6;
+  height: 100%;
+  background-color: #fce4cc;
 }
 
 .App {
+  min-height: 100vh;
   margin: 10px;
   text-align: center;
   padding-top: 10px;
+  background-color: #fce4cc;
 }
 
 .header {
@@ -45,6 +49,20 @@ body {
   margin-bottom: 1rem;
 }
 
+.notes {
+  padding-top: 15px;
+  font-style: italic;
+}
+
+.textarea {
+  width: 300px;
+  height: 100px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
 .container {
   display: flex;
   flex-wrap: wrap;
@@ -68,8 +86,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border: 1px solid #ccc;
-  padding: 8px 10px;
+  border: 3px solid #ccc;
+  padding: 10px 10px;
   border-radius: 8px;
   width: fit-content;
 }
@@ -80,6 +98,7 @@ body {
   width: 100px;
   height: 40px;
   cursor: pointer;
+  margin-top: 10px;
 }
 
 .input {
@@ -87,6 +106,7 @@ body {
   border: none;
   font-size: 16px;
   padding: 8px 10px;
+  background-color: #fee5d9;
 }
 
 .book-title {
@@ -95,7 +115,7 @@ body {
   text-align: center;
 }
 .custom-card {
-  background-color: #e3b599;
+  background-color: #ffbda2;
   color: #333;
   border-radius: 15px;
   padding: 40px 50px;
@@ -107,7 +127,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: end;
-  background-color: #e8ce79;
+  background-color: #ffd494;
   padding-bottom: 20px;
   margin-bottom: 10px;
 }

@@ -10,7 +10,7 @@ const Book = ({ item }) => {
       style={{
         width: "20rem",
         borderRadius: "15px",
-        backgroundColor: "#E6CAAF",
+        backgroundColor: "#ffd494",
       }}
       className="custom-card"
     >
@@ -18,7 +18,7 @@ const Book = ({ item }) => {
         <CardTitle className="book-title">{item.title}</CardTitle>
         <div className="book-details">
           <div>Author: {item.author}</div>
-          <div>{item.notesAboutBook}</div>
+          <div className="notes">{item.notesAboutBook}</div>
         </div>
         <Button
           color="danger"
