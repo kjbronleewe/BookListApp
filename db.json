@@ -13,28 +13,16 @@
       "notesAboutBook": "This is a parenting book. \nGood on audio. "
     },
     {
-      "id": "f64c",
-      "title": "The Traitor Queen ",
-      "author": "Danielle Jensen ",
-      "notesAboutBook": "Second book in series. "
-    },
-    {
-      "id": "8d7e",
-      "title": "Guilty Creatures ",
-      "author": "Some Author ",
-      "notesAboutBook": ""
-    },
-    {
       "id": "667a",
       "title": "Pride and Prejudice ",
       "author": "Jane Austen",
       "notesAboutBook": ""
     },
     {
-      "id": "58f2",
-      "title": "test book ",
-      "author": "test author ",
-      "notesAboutBook": "I want to read this"
+      "id": "9bee",
+      "title": "Some book ",
+      "author": "An author",
+      "notesAboutBook": "I would like to read this tomorrow."
     }
   ]
 }
